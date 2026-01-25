@@ -1,0 +1,44 @@
+<section class="panel">
+  <div class="panel__head">
+    <div>
+      <h2>Edit product</h2>
+      <p class="muted">Update details stored in DynamoDB</p>
+    </div>
+    <a class="link" href="/">Back to list</a>
+  </div>
+
+  <form action="/products/<%= product.id %>?_method=PUT" method="POST" enctype="multipart/form-data" class="form">
+    <label class="field">
+      <span>Name</span>
+      <input type="text" name="name" value="<%= product.name %>" required>
+    </label>
+
+    <label class="field">
+      <span>Price</span>
+      <input type="number" name="price" step="0.01" min="0" value="<%= product.price %>" required>
+    </label>
+
+    <label class="field">
+      <span>Quantity</span>
+      <input type="number" name="quantity" min="0" value="<%= product.quantity %>" required>
+    </label>
+
+    <label class="field">
+      <span>Image</span>
+      <% if (product.url_image) { %>
+        <div class="current-image">
+          <img src="<%= product.url_image %>" alt="<%= product.name %>">
+          <p class="muted">Upload a new file to replace the current image.</p>
+        </div>
+      <% } else { %>
+        <p class="muted">No image uploaded. Add one below.</p>
+      <% } %>
+      <input type="file" name="image" accept="image/*">
+    </label>
+
+    <div class="actions">
+      <a class="btn ghost" href="/">Cancel</a>
+      <button type="submit" class="btn solid">Update</button>
+    </div>
+  </form>
+</section>

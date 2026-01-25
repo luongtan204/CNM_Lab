@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Manager</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <p class="eyebrow">AWS • DynamoDB • S3</p>
+      <h1>Product Manager</h1>
+      <p class="subtitle">CRUD app on Express + EJS, deployed on EC2.</p>
+      <div class="actions">
+        <a href="/" class="btn ghost">View products</a>
+        <a href="/products/new" class="btn solid">Add product</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <%- body %>
+  </main>
+</body>
+</html>

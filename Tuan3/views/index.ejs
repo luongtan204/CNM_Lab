@@ -1,0 +1,49 @@
+<section class="panel">
+  <div class="panel__head">
+    <div>
+      <h2>Products</h2>
+      <p class="muted">Listing all items in DynamoDB</p>
+    </div>
+    <a class="btn solid" href="/products/new">+ Add product</a>
+  </div>
+
+  <% if (products.length === 0) { %>
+    <p class="muted">No products yet. Add one to get started.</p>
+  <% } else { %>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% products.forEach(p => { %>
+            <tr>
+              <td>
+                <% if (p.url_image) { %>
+                  <img src="<%= p.url_image %>" alt="<%= p.name %>" class="thumb">
+                <% } else { %>
+                  <span class="muted">No image</span>
+                <% } %>
+              </td>
+              <td><%= p.name %></td>
+              <td>$<%= Number(p.price).toFixed(2) %></td>
+              <td><%= p.quantity %></td>
+              <td class="row-actions">
+                <a class="link" href="/products/<%= p.id %>/edit">Edit</a>
+                <form action="/products/<%= p.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Delete this product?')">
+                  <button type="submit" class="link danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</section>
