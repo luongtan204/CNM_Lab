@@ -1,0 +1,10 @@
+[2026-01-12 10:00:00] Server started
+[2026-01-12 10:05:23] User logged in:  user123
+[2026-01-12 10:10:45] Database connected
+[2026-01-12 10:15:12] API request:  GET /api/users
+[2026-01-12 10:20:33] API request: POST /api/data
+[2026-01-12 10:25:44] Error: Connection timeout
+[2026-01-12 10:30:15] User logged out: user123
+[2026-01-12 10:35:22] API request: GET /api/products
+[2026-01-12 10:40:11] Database query executed
+[2026-01-12 10:45:00] Server shutdown

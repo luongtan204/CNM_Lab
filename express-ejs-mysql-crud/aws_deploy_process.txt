@@ -1,0 +1,85 @@
+Quy trình triển khai dự án Node.js + Express + EJS + MySQL lên AWS (tổng quát)
+
+1) Chuẩn bị mã nguồn
+- Bảo đảm dùng biến môi trường (.env) và có file .env.example.
+- Sửa cấu hình DB, PORT, SESSION_SECRET qua biến môi trường.
+- Có script start: "node app.js" trong package.json.
+
+2) Chọn kiến trúc triển khai (khuyến nghị)
+A. EC2 + RDS (dễ kiểm soát, phù hợp demo/đồ án)
+B. Elastic Beanstalk + RDS (triển khai nhanh, quản lý đơn giản)
+C. ECS/Fargate + RDS (production, containerized)
+
+3) Tạo cơ sở dữ liệu (RDS MySQL)
+- Tạo RDS MySQL (Free Tier nếu đủ điều kiện).
+- Tạo Security Group cho phép kết nối từ EC2/Beanstalk/ECS.
+- Ghi lại: DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT.
+- Import schema:
+  CREATE DATABASE demo_express;
+  USE demo_express;
+  CREATE TABLE users (...);
+  CREATE TABLE products (...);
+
+4) Triển khai theo lựa chọn
+
+A. Triển khai bằng EC2 (hướng dẫn nhanh)
+- Tạo EC2 (Ubuntu 22.04 LTS), tạo key pair.
+- Mở port 80 (HTTP) và 22 (SSH) trong Security Group.
+- SSH vào EC2:
+  sudo apt update
+  sudo apt install -y nodejs npm
+  # hoặc dùng nvm để cài Node LTS
+- Clone source hoặc upload:
+  git clone <repo>
+  cd express-ejs-mysql-crud
+  npm install
+- Tạo file .env trên EC2:
+  PORT=3000
+  SESSION_SECRET=... 
+  DB_HOST=... (endpoint RDS)
+  DB_USER=...
+  DB_PASSWORD=...
+  DB_NAME=demo_express
+  DB_PORT=3306
+- Chạy app bằng PM2:
+  npm install -g pm2
+  pm2 start app.js --name express-ejs
+  pm2 save
+  pm2 startup
+- Dùng Nginx reverse proxy để public port 80:
+  sudo apt install -y nginx
+  sudo nano /etc/nginx/sites-available/default
+  # proxy_pass http://localhost:3000;
+  sudo systemctl restart nginx
+
+B. Triển khai bằng Elastic Beanstalk
+- Cài EB CLI: pip install awsebcli
+- eb init (chọn region, Node.js platform)
+- eb create (tạo môi trường)
+- Thiết lập env vars trong EB:
+  PORT, SESSION_SECRET, DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT
+- eb deploy
+
+C. Triển khai bằng ECS Fargate
+- Dockerize app (Dockerfile + ECS task definition).
+- Push image lên ECR.
+- Tạo ECS service + ALB.
+- Thiết lập env vars trong task definition.
+
+5) Cấu hình domain + SSL (tuỳ chọn)
+- Dùng Route 53 + ACM để cấp HTTPS.
+- Gắn domain vào ALB hoặc EC2.
+
+6) Bảo mật & vận hành
+- Không commit .env.
+- Dùng Secrets Manager/Parameter Store cho mật khẩu DB.
+- Bật auto-scaling nếu cần.
+- Log: CloudWatch.
+
+7) Kiểm thử sau triển khai
+- Kiểm tra URL đăng nhập.
+- Đăng ký user mới và CRUD sản phẩm.
+
+Gợi ý phù hợp đồ án nhanh
+- Dùng Elastic Beanstalk + RDS là nhanh nhất.
+- Hoặc EC2 + RDS nếu cần kiểm soát cấu hình trực tiếp.

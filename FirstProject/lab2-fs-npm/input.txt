@@ -1,0 +1,2 @@
+Hello Node.js!
+This is Lab 2.
