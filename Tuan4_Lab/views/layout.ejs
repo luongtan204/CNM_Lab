@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Manager</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <nav class="topbar">
+    <div class="topbar__brand">
+      <a href="/">Product Manager</a>
+      <span class="chip">DynamoDB • S3</span>
+    </div>
+    <div class="topbar__links">
+      <a href="/">Products</a>
+      <a href="/categories">Categories</a>
+      <% if (currentUser) { %>
+        <span class="user">User: <%= currentUser.username %> (<%= currentUser.role %>)</span>
+        <form action="/logout" method="POST">
+          <button class="btn ghost" type="submit">Logout</button>
+        </form>
+      <% } else { %>
+        <a class="btn solid" href="/login">Login</a>
+      <% } %>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <p class="eyebrow">AWS • DynamoDB • S3</p>
+      <h1>Product Manager</h1>
+      <p class="subtitle">Role-based CRUD with audit logs and S3 images.</p>
+      <div class="actions">
+        <% if (currentUser) { %>
+          <a href="/" class="btn ghost">View products</a>
+          <% if (currentUser.role === 'admin') { %>
+            <a href="/products/new" class="btn solid">Add product</a>
+          <% } %>
+        <% } else { %>
+          <a href="/login" class="btn solid">Login to manage</a>
+        <% } %>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <% if (flash) { %>
+      <div class="alert <%= flash.type %>"><%= flash.message %></div>
+    <% } %>
+    <%- body %>
+  </main>
+</body>
+</html>

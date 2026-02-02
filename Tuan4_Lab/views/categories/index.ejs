@@ -1,0 +1,45 @@
+<section class="panel">
+  <div class="panel__head">
+    <div>
+      <h2>Categories</h2>
+      <p class="muted">Business rule: deleting category does NOT remove products.</p>
+    </div>
+    <% if (currentUser && currentUser.role === 'admin') { %>
+      <a class="btn solid" href="/categories/new">+ Add category</a>
+    <% } %>
+  </div>
+
+  <% if (categories.length === 0) { %>
+    <p class="muted">No categories yet.</p>
+  <% } else { %>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Created</th>
+            <% if (currentUser && currentUser.role === 'admin') { %><th>Actions</th><% } %>
+          </tr>
+        </thead>
+        <tbody>
+          <% categories.forEach(c => { %>
+            <tr>
+              <td><%= c.name %></td>
+              <td><%= c.description || '-' %></td>
+              <td><%= c.createdAt ? new Date(c.createdAt).toLocaleString() : '-' %></td>
+              <% if (currentUser && currentUser.role === 'admin') { %>
+                <td class="row-actions">
+                  <a class="link" href="/categories/<%= c.categoryId %>/edit">Edit</a>
+                  <form action="/categories/<%= c.categoryId %>?_method=DELETE" method="POST" onsubmit="return confirm('Delete category? Products will stay assigned.')">
+                    <button type="submit" class="link danger">Delete</button>
+                  </form>
+                </td>
+              <% } %>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  <% } %>
+</section>

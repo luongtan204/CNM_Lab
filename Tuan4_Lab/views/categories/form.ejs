@@ -1,0 +1,26 @@
+<section class="panel">
+  <div class="panel__head">
+    <div>
+      <h2><%= mode === 'edit' ? 'Edit category' : 'Add category' %></h2>
+      <p class="muted">Categories help group products for filtering.</p>
+    </div>
+    <a class="link" href="/categories">Back to list</a>
+  </div>
+
+  <form class="form" action="<%= mode === 'edit' ? `/categories/${category.categoryId}?_method=PUT` : '/categories' %>" method="POST">
+    <label class="field">
+      <span>Name</span>
+      <input type="text" name="name" value="<%= category ? category.name : '' %>" required>
+    </label>
+
+    <label class="field">
+      <span>Description</span>
+      <input type="text" name="description" value="<%= category ? category.description : '' %>">
+    </label>
+
+    <div class="actions">
+      <a class="btn ghost" href="/categories">Cancel</a>
+      <button type="submit" class="btn solid">Save</button>
+    </div>
+  </form>
+</section>

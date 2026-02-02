@@ -1,0 +1,46 @@
+<section class="panel">
+  <div class="panel__head">
+    <div>
+      <h2>Add product</h2>
+      <p class="muted">Create a new item and upload its photo</p>
+    </div>
+    <a class="link" href="/">Back to list</a>
+  </div>
+
+  <form action="/products" method="POST" enctype="multipart/form-data" class="form">
+    <label class="field">
+      <span>Name</span>
+      <input type="text" name="name" placeholder="Product name" required>
+    </label>
+
+    <label class="field">
+      <span>Price</span>
+      <input type="number" name="price" step="0.01" min="0" placeholder="0.00" required>
+    </label>
+
+    <label class="field">
+      <span>Quantity</span>
+      <input type="number" name="quantity" min="0" placeholder="0" required>
+    </label>
+
+    <label class="field">
+      <span>Category</span>
+      <select name="categoryId" required>
+        <option value="">Select category</option>
+        <% categories.forEach(c => { %>
+          <option value="<%= c.categoryId %>"><%= c.name %></option>
+        <% }) %>
+      </select>
+    </label>
+
+    <label class="field">
+      <span>Image</span>
+      <input type="file" name="image" accept="image/*">
+    </label>
+
+    <div class="actions">
+      <a class="btn ghost" href="/">Cancel</a>
+      <button type="submit" class="btn solid">Save</button>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,86 @@
+<section class="panel">
+  <div class="panel__head">
+    <div>
+      <h2>Products</h2>
+      <p class="muted">Non-deleted items in DynamoDB (<%= usedIndex ? 'Query via GSI' : 'Scan' %>)</p>
+    </div>
+    <% if (currentUser && currentUser.role === 'admin') { %>
+      <a class="btn solid" href="/products/new">+ Add product</a>
+    <% } %>
+  </div>
+
+  <form class="filter" method="GET" action="/">
+    <input type="text" name="q" placeholder="Search name" value="<%= filters.q || '' %>">
+    <select name="categoryId">
+      <option value="">All categories</option>
+      <% categories.forEach(c => { %>
+        <option value="<%= c.categoryId %>" <%= filters.categoryId === c.categoryId ? 'selected' : '' %>><%= c.name %></option>
+      <% }) %>
+    </select>
+    <input type="number" step="0.01" name="priceMin" placeholder="Min price" value="<%= filters.priceMin || '' %>">
+    <input type="number" step="0.01" name="priceMax" placeholder="Max price" value="<%= filters.priceMax || '' %>">
+    <button class="btn ghost" type="submit">Apply</button>
+  </form>
+
+  <% if (products.length === 0) { %>
+    <p class="muted">No products match filters.</p>
+  <% } else { %>
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <% if (currentUser && currentUser.role === 'admin') { %><th>Actions</th><% } %>
+          </tr>
+        </thead>
+        <tbody>
+          <% products.forEach(p => { %>
+            <tr>
+              <td>
+                <% if (p.url_image) { %>
+                  <img src="<%= p.url_image %>" alt="<%= p.name %>" class="thumb">
+                <% } else { %>
+                  <span class="muted">No image</span>
+                <% } %>
+              </td>
+              <td><%= p.name %></td>
+              <td><%= p.categoryName %></td>
+              <td>$<%= Number(p.price).toFixed(2) %></td>
+              <td><%= p.quantity %></td>
+              <td>
+                <% if (p.inventoryStatus === 'out') { %>
+                  <span class="badge danger">Out of stock</span>
+                <% } else if (p.inventoryStatus === 'low') { %>
+                  <span class="badge warning">Low (<5)</span>
+                <% } else { %>
+                  <span class="badge success">In stock</span>
+                <% } %>
+              </td>
+              <% if (currentUser && currentUser.role === 'admin') { %>
+                <td class="row-actions">
+                  <a class="link" href="/products/<%= p.id %>/edit">Edit</a>
+                  <form action="/products/<%= p.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Soft delete this product?')">
+                    <button type="submit" class="link danger">Delete</button>
+                  </form>
+                </td>
+              <% } %>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination">
+      <div>Page <%= pagination.currentPage %> / <%= pagination.totalPages %></div>
+      <div class="actions">
+        <a class="btn ghost" href="/?<%= pagination.prevQuery %>" aria-disabled="<%= pagination.currentPage === 1 %>">Prev</a>
+        <a class="btn ghost" href="/?<%= pagination.nextQuery %>" aria-disabled="<%= pagination.currentPage === pagination.totalPages %>">Next</a>
+      </div>
+    </div>
+  <% } %>
+</section>

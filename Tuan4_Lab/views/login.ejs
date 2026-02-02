@@ -1,0 +1,27 @@
+<section class="panel auth">
+  <div class="panel__head">
+    <div>
+      <h2>Login</h2>
+      <p class="muted">Session-based authentication (Users table)</p>
+    </div>
+    <a class="link" href="/">Back to products</a>
+  </div>
+
+  <% if (error) { %>
+    <div class="alert error"><%= error %></div>
+  <% } %>
+
+  <form class="form" action="/login" method="POST">
+    <label class="field">
+      <span>Username</span>
+      <input type="text" name="username" required autocomplete="username">
+    </label>
+    <label class="field">
+      <span>Password</span>
+      <input type="password" name="password" required autocomplete="current-password">
+    </label>
+    <div class="actions">
+      <button type="submit" class="btn solid">Login</button>
+    </div>
+  </form>
+</section>
