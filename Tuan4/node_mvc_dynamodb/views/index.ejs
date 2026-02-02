@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Products</h1>
+      <a class="button" href="/products/new">Add Product</a>
+    </header>
+
+    <% if (products.length === 0) { %>
+      <p>No products yet.</p>
+    <% } else { %>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% products.forEach((p) => { %>
+            <tr>
+              <td>
+                <% if (p.imageUrl) { %>
+                  <img class="thumb" src="<%= p.imageUrl %>" alt="<%= p.name %>" />
+                <% } else { %>
+                  <span class="thumb placeholder">—</span>
+                <% } %>
+              </td>
+              <td><%= p.name %></td>
+              <td>$<%= Number(p.price || 0).toFixed(2) %></td>
+              <td><%= p.description || '' %></td>
+              <td class="actions">
+                <a class="link" href="/products/<%= p.id %>/edit">Edit</a>
+                <form action="/products/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Delete this product?');">
+                  <button class="link danger" type="submit">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </main>
+</body>
+</html>
