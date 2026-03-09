@@ -1,0 +1,88 @@
+<div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
+    <div class="flex items-center justify-between mb-6 border-b pb-4">
+        <h1 class="text-2xl font-bold text-gray-800">Sửa Sản phẩm</h1>
+        <a href="/" class="text-gray-500 hover:text-gray-700 transition">
+            <i class="fas fa-arrow-left mr-1"></i> Quay lại
+        </a>
+    </div>
+
+    <% if (error) { %>
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded" role="alert">
+            <p><%= error %></p>
+        </div>
+    <% } %>
+
+    <form action="/edit/<%= product.ID %>?_method=PUT" method="POST" enctype="multipart/form-data" class="space-y-5">
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Mã sản phẩm (ID)</label>
+            <input type="text" value="<%= product.ID %>" disabled
+                class="w-full border border-gray-200 bg-gray-100 rounded-md px-4 py-2 text-gray-500 cursor-not-allowed">
+            <p class="text-xs text-gray-500 mt-1">Không thể thay đổi mã sản phẩm.</p>
+        </div>
+
+        <div>
+            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Tên sản phẩm <span class="text-red-500">*</span></label>
+            <input type="text" id="name" name="name" value="<%= product.name %>" required
+                class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div>
+                <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Giá (VNĐ) <span class="text-red-500">*</span></label>
+                <input type="number" id="price" name="price" value="<%= product.price %>" min="0.01" step="0.01" required
+                    class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="quantity" class="block text-sm font-medium text-gray-700 mb-1">Số lượng <span class="text-red-500">*</span></label>
+                <input type="number" id="quantity" name="quantity" value="<%= product.quantity %>" min="0" required
+                    class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Hình ảnh hiện tại</label>
+            <% if (product.image) { %>
+                <div class="mb-4">
+                    <img src="<%= product.image %>" alt="<%= product.name %>" class="h-32 object-contain rounded border" referrerpolicy="no-referrer">
+                </div>
+            <% } else { %>
+                <div class="mb-4 text-sm text-gray-500 italic">Chưa có hình ảnh</div>
+            <% } %>
+
+            <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Cập nhật hình ảnh (Tùy chọn)</label>
+            <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)"
+                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+            <p class="text-xs text-gray-500 mt-1">Để trống nếu muốn giữ nguyên hình ảnh cũ.</p>
+            
+            <div id="imagePreviewContainer" class="mt-4 hidden">
+                <p class="text-sm text-gray-500 mb-2">Xem trước ảnh mới:</p>
+                <img id="imagePreview" src="#" alt="Preview" class="h-32 object-contain rounded border" referrerpolicy="no-referrer">
+            </div>
+        </div>
+
+        <div class="pt-4 flex justify-end gap-3 border-t">
+            <a href="/" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 transition">Hủy</a>
+            <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition font-medium">Cập nhật</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function previewImage(event) {
+        const input = event.target;
+        const previewContainer = document.getElementById('imagePreviewContainer');
+        const previewImage = document.getElementById('imagePreview');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                previewContainer.classList.remove('hidden');
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            previewContainer.classList.add('hidden');
+        }
+    }
+</script>

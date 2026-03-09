@@ -1,0 +1,5 @@
+{
+  "name": "Quản lý Sản phẩm",
+  "description": "Ứng dụng quản lý sản phẩm sử dụng Node.js, EJS, DynamoDB và S3.",
+  "requestFramePermissions": []
+}
