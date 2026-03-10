@@ -14,7 +14,7 @@ const credentials = {
 };
 
 if (!process.env.AWS_ACCESS_KEY_ID) {
-    console.warn("Warning: AWS_ACCESS_KEY_ID is missing from environment variables.");
+  console.warn("Warning: AWS_ACCESS_KEY_ID is missing from environment variables.");
 }
 
 // S3 Client

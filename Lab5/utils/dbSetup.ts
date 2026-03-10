@@ -14,43 +14,16 @@ export async function ensureTableExists() {
       return;
     }
 
-    console.log(`Table '${TABLE_NAME}' not found. Creating...`);
-    const params: CreateTableCommandInput = {
-      TableName: TABLE_NAME,
-      KeySchema: [
-        { AttributeName: 'ID', KeyType: 'HASH' },
-      ],
-      AttributeDefinitions: [
-        { AttributeName: 'ID', AttributeType: 'S' },
-      ],
-      ProvisionedThroughput: {
-        ReadCapacityUnits: 5,
-        WriteCapacityUnits: 5,
-      },
-    };
+    throw new Error(`Bảng DynamoDB '${TABLE_NAME}' không tồn tại. Vui lòng kiểm tra lại cấu hình DYNAMODB_TABLE_NAME trong file .env!`);
 
-    const createCommand = new CreateTableCommand(params);
-    await ddbClient.send(createCommand);
-    console.log(`Table '${TABLE_NAME}' creation initiated. Waiting for it to become ACTIVE...`);
-    
-    // Wait for table to be active
-    const maxRetries = 20;
-    for (let i = 0; i < maxRetries; i++) {
-        await new Promise(r => setTimeout(r, 2000));
-        try {
-            const { Table } = await ddbClient.send(new DescribeTableCommand({ TableName: TABLE_NAME }));
-            if (Table?.TableStatus === 'ACTIVE') {
-                console.log('Table is ACTIVE.');
-                return;
-            }
-        } catch(e) {
-            // Include helpful logging if describe fails
-        }
-        process.stdout.write('.');
+  } catch (err: any) {
+    if (err.name === 'ResourceNotFoundException' || err.message.includes('không tồn tại')) {
+      console.error('\n❌ LỖI NGHIÊM TRỌNG:', err.message);
+      console.error('👉 Hãy đảm bảo rằng bảng đã được tạo sẵn trên AWS DynamoDB hoặc sửa lại tên bảng trong file .env cho đúng.\n');
+
+    } else {
+      console.error('Lỗi khi kiểm tra bảng DynamoDB:', err);
+
     }
-    console.log('\nTimed out waiting for table to become active.');
-
-  } catch (err) {
-    console.error('Error ensuring table exists:', err);
   }
 }
