@@ -1,0 +1,169 @@
+:root {
+    --bg: #fff;
+    --border: #ccc;
+    --text: #000;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #fff;
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.main-wrapper {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 180px;
+    background: #fff;
+    border-right: 1px solid var(--border);
+    padding: 1rem 0;
+}
+
+.sidebar a {
+    display: block;
+    padding: 0.8rem 1rem;
+    color: #000;
+    text-decoration: none;
+    border-left: 3px solid transparent;
+}
+
+.sidebar a.active {
+    background: #f0f0f0;
+    border-left-color: #000;
+}
+
+.sidebar a:hover {
+    background: #f0f0f0;
+}
+
+.main-content {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: normal;
+}
+
+.btn-add {
+    background: #000;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 2px;
+    font-size: 0.9rem;
+    border: 1px solid #000;
+}
+
+.btn-add:hover {
+    background: #333;
+}
+
+.search-filter {
+    background: #fff;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+}
+
+.ticket-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.ticket-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.ticket-card-header h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.ticket-card-id {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 0.3rem;
+}
+
+.ticket-card-body {
+    padding: 0.8rem;
+}
+
+.badge {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.75rem;
+    background: #f0f0f0;
+    border: 1px solid var(--border);
+}
+
+.ticket-actions {
+    display: flex;
+    gap: 0.3rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 0.3rem 0.6rem;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .main-wrapper {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 0;
+        display: flex;
+    }
+    .sidebar a {
+        flex: 1;
+        text-align: center;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        padding: 0.6rem;
+    }
+    .sidebar a.active {
+        border-left: none;
+        border-bottom-color: #000;
+    }
+    .ticket-grid {
+        grid-template-columns: 1fr;
+    }
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
